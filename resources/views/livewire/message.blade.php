@@ -7,7 +7,7 @@
                         Users
                     </div>
                     <div class="card-body chatbox p-0">
-                        <ul class="list-group list-group-flush" wire:poll="render">
+                        <ul class="list-group list-group-flush" wire:poll>
                             @foreach($users as $user)
                                 @php
                                     $not_seen = \App\Models\Message::where('user_id', $user->id)->where('receiver', auth()->id())->where('is_seen', false)->get() ?? null
@@ -34,7 +34,7 @@
 
                     @elseif(auth()->user()->is_admin == true)
                         Select a user to see the chat
-                    @elseif($admin->is_online)
+                    @elseif(isset($admin->is_online))
                         <i class="fa fa-circle text-success"></i> We are online
                     @else
                         Messages
@@ -61,7 +61,7 @@
                                             </div>
                                         @elseif ($message->file)
                                             <div class="w-100 my-2">
-                                                <a href="{{ $message->file}}" class="bg-light p-2 rounded-pill" target="_blank"><i class="fa fa-download"></i> 
+                                                <a href="{{ $message->file}}" class="bg-light p-2 rounded-pill" target="_blank"><i class="fa fa-download"></i>
                                                     {{ $message->file_name }}
                                                 </a>
                                             </div>
@@ -81,7 +81,7 @@
                     <div class="card-footer">
                         <form wire:submit.prevent="SendMessage" enctype="multipart/form-data">
                             <div wire:loading wire:target='SendMessage'>
-                                Sending message . . . 
+                                Sending message . . .
                             </div>
                             <div wire:loading wire:target="file">
                                 Uploading file . . .
